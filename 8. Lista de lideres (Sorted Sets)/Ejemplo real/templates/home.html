@@ -1,0 +1,78 @@
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/milligram/1.3.0/milligram.css">
+        <title>100% Fake Bookstore</title>
+    </head>
+    <style>
+        .round-box {
+            margin: 10px;
+            border: 2px solid #9b4dca;
+            border-radius: 16px;
+            box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+<body>
+
+<div class="container">
+  <h1>Fake Bookstore</h1>
+
+
+  <div class="row">
+    <div class="column column-50 round-box">
+        <h2>Latest Books</h2>
+        <dl>
+        {% for post in posts %}
+            <dt>
+            {% if not votes or votes[post.id] != 1 %}
+                <a href="/post/{{ post.id }}/upvote">&#8657;</a>
+            {% endif %}
+            {% if not votes or votes[post.id] != -1 %}
+                <a href="/post/{{ post.id }}/downvote">&#8659;</a>
+            {% endif %}
+                <strong>{{ post.likes }}</strong>
+                {{ post.title }}
+            </dt>
+        {% endfor %}
+        </dl>
+    </div>
+    <div class="column column-50 round-box">
+        <h2>Top 3 books</h2>
+        <ul>
+            {% for book in top_books %}
+                <li>#{{ loop.index }} {{ book['title'] }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+  </div>
+
+    <div class="row">
+        <div class="column column-50 round-box">
+            <h4>Add book</h4>
+            <form action="/posts" method="post">
+                <label for="title">Title:</label>
+                <input type="text" name="title" autocomplete="off" />
+                <input type="submit" value="Add">
+            </form>
+        </div>
+    </div>
+    <div class="row">
+      <div class="column column-50 round-box">
+         <span>
+            <a href="/reset-app">redis-cli: flushall</a>
+         </span>
+        <p>User: {{ user_id }}</p>
+        <p>Visits in the home page: {{ visits }}</p>
+        {% if rate_limits %}
+            <span>Rate limit: {{ rate_limits['current'] }}/{{ rate_limits['max'] }} </span>
+        {% endif %}
+     </div>
+    </div>
+
+
+
+</div>
+
+</body>
+</html>
