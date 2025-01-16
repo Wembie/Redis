@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+
+  php-server:
+    image: php:7.2-cli
+    ports:
+      - 8080:8080
+    volumes:
+      - ./src:/root/src
+    command: php -S 0.0.0.0:8080 -t /root/src
+    stop_signal: KILL
+    environment:
+      - REDIS_HOST=redis
+
+  redis:
+    image: redis:5
+
+  composer:
+    image: composer:1.8
+    volumes:
+      - ./src:/app
+      - ~/.composer:/root/.composer
